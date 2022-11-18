@@ -23,6 +23,3 @@ class UDPServer:
             if data:
                 data, addr = data
                 self.recived += 1
-
-    def send(self, data, addr):
-        self.sock.sendto(data, addr)

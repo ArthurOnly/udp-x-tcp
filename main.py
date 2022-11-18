@@ -17,8 +17,10 @@ def benchmark_udp():
         while True:
             client_udp.send('ping')
     def log():
+        elapsed_time = 1
         while True:
-            print(f'UDP - {server_udp.recived}')
+            print(f'UDP - {int(server_udp.recived/elapsed_time)}/s')
+            elapsed_time += 2
             sleep(2)
     Thread(target=server_udp.listen).start()
     Thread(target=send).start()
@@ -29,8 +31,10 @@ def benchmark_tcp():
         while True:
             client_tcp.send('ping')
     def log():
+        elapsed_time = 1
         while True:
-            print(f'TCP - {server_tcp.recived}')
+            print(f'TCP - {int(server_tcp.recived/elapsed_time)}/s')
+            elapsed_time += 2
             sleep(2)
     Thread(target=server_tcp.listen).start()
     Thread(target=send).start()
