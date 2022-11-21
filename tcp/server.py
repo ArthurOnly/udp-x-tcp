@@ -2,6 +2,7 @@ import socket
 
 class TCPServer:
     recived = 0
+    unordered = 0
 
     def __init__(self, host='localhost', port=65434):
         self.host = host
@@ -22,4 +23,4 @@ class TCPServer:
                     break
 
     def receive(self, con):
-        return con.recvfrom(1024)
+        return con.recv(1024)

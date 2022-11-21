@@ -14,12 +14,14 @@ client_tcp = TCPClient()
 
 def benchmark_udp():
     def send():
+        num = 1
         while True:
-            client_udp.send('ping')
+            client_udp.send(str(num)+";")
+            num += 1
     def log():
         elapsed_time = 1
         while True:
-            print(f'UDP - {int(server_udp.recived/elapsed_time)}/s')
+            print(f'UDP - {int(server_udp.recived/elapsed_time)}/s | unordered: {server_udp.unordered}')
             elapsed_time += 2
             sleep(2)
     Thread(target=server_udp.listen).start()
@@ -28,12 +30,14 @@ def benchmark_udp():
 
 def benchmark_tcp():
     def send():
+        num = 1
         while True:
-            client_tcp.send('ping')
+            client_tcp.send(str(num)+";")
+            num += 1
     def log():
         elapsed_time = 1
         while True:
-            print(f'TCP - {int(server_tcp.recived/elapsed_time)}/s')
+            print(f'TCP - {int(server_tcp.recived/elapsed_time)}/s | unordered: x')
             elapsed_time += 2
             sleep(2)
     Thread(target=server_tcp.listen).start()
