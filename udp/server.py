@@ -4,6 +4,8 @@ import socket
 class UDPServer:
     recived = 0
     unordered = 0
+    inner_buffer = ""
+    last = 0
 
     def __init__(self, host='localhost', port=65433):
         self.host = host
@@ -14,20 +16,26 @@ class UDPServer:
 
     def receive(self):
         try:
-            data, addr = self.sock.recvfrom(1024)
+            data, addr = self.sock.recvfrom(2048)
             return [data, addr]
         except:
             return None
 
     def listen(self):
-        previous = 0
         while True:
             data = self.receive()
             if data:
-                data, addr = data
-                self.recived += 1
-                data = int(data.decode('utf-8').split(';')[0])
-                if data != previous + 1:
-                    print(f'Unordered: {data} != {previous + 1}')
-                    self.unordered += 1
-                previous = data
+                data, from_addr = data
+                for char in data.decode('utf-8'):
+                    self.parse_recived(char)
+
+    def parse_recived(self, char):
+        if char == ';':
+            self.recived += 1
+
+            if int(self.inner_buffer) != self.last + 1:
+                self.unordered += 1
+            self.last = int(self.inner_buffer)
+            self.inner_buffer = ""
+        else:
+            self.inner_buffer += char

@@ -21,7 +21,7 @@ def benchmark_udp():
     def log():
         elapsed_time = 1
         while True:
-            print(f'UDP - {int(server_udp.recived/elapsed_time)}/s | unordered: {server_udp.unordered}')
+            print(f'{elapsed_time} UDP - {int(server_udp.recived/elapsed_time)}/s | unordered: {server_udp.unordered/elapsed_time}/s | last: {server_udp.last}')
             elapsed_time += 2
             sleep(2)
     Thread(target=server_udp.listen).start()
@@ -32,12 +32,12 @@ def benchmark_tcp():
     def send():
         num = 1
         while True:
-            client_tcp.send(str(num)+";")
+            client_tcp.send_with_connection(str(num)+";")
             num += 1
     def log():
         elapsed_time = 1
         while True:
-            print(f'TCP - {int(server_tcp.recived/elapsed_time)}/s | unordered: x')
+            print(f'{elapsed_time} TCP - {int(server_tcp.recived/elapsed_time)}/s | unordered: {server_tcp.unordered/elapsed_time}/s | last: {server_tcp.last}')
             elapsed_time += 2
             sleep(2)
     Thread(target=server_tcp.listen).start()
@@ -45,4 +45,4 @@ def benchmark_tcp():
     Thread(target=log).start()
 
 benchmark_tcp()
-benchmark_udp()
+#benchmark_udp()
